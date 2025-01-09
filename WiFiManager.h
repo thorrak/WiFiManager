@@ -64,7 +64,7 @@
 
 #define WM_WEBSERVERSHIM      // use webserver shim lib
 
-#define WM_G(string_literal)  (std::string(FPSTR(string_literal)).c_str())
+#define WM_G(string_literal)  (std::string(string_literal).c_str())
 
 #ifdef ESP8266
 
@@ -554,7 +554,7 @@ class WiFiManager
     unsigned long _saveTimeout            = 0; // ms stop trying to connect to ap on saves, in case bugs in esp waitforconnectresult
     
     WiFiMode_t    _usermode               = WIFI_STA; // Default user mode
-    std::string        _wifissidprefix         = FPSTR(S_ssidpre); // auto apname prefix prefix+chipid
+    std::string        _wifissidprefix         = S_ssidpre; // auto apname prefix prefix+chipid
     int           _cpclosedelay           = 2000; // delay before wifisave, prevents captive portal from closing to fast.
     bool          _cleanConnect           = false; // disconnect before connect in connectwifi, increases stability on connects
     bool          _connectonsave          = true; // connect to wifi when saving creds
@@ -607,7 +607,7 @@ class WiFiManager
     const char*   _customBodyFooter       = ""; // store custom bottom body element html from user inside <body>
     const char*   _customMenuHTML         = ""; // store custom menu html from user
     std::string        _bodyClass              = ""; // class to add to body
-    std::string        _title                  = FPSTR(S_brand); // app title -  default WiFiManager
+    std::string        _title                  = S_brand; // app title -  default WiFiManager
 
     // internal options
     
@@ -795,7 +795,7 @@ protected:
     WiFiManagerParameter** _params    = NULL;
 
     boolean _debug  = true;
-    std::string _debugPrefix = FPSTR(S_debugPrefix);
+    std::string _debugPrefix = S_debugPrefix;
 
     wm_debuglevel_t debugLvlShow = WM_DEBUG_VERBOSE; // at which level start showing [n] level tags
 
