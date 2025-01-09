@@ -120,18 +120,18 @@ void checkButton(){
 }
 
 
-String getParam(String name){
+std::string getParam(std::string name){
   //read parameter from server, for customhmtl input
-  String value;
-  if(wm.server->hasArg(name)) {
-    value = wm.server->arg(name);
+  std::string value;
+  if(wm.server->hasArg(name.c_str())) {
+    value = wm.server->arg(name.c_str()).c_str();
   }
   return value;
 }
 
 void saveParamCallback(){
   Serial.println("[CALLBACK] saveParamCallback fired");
-  Serial.println("PARAM customfieldid = " + getParam("customfieldid"));
+  Serial.println("PARAM customfieldid = " + getParam("customfieldid").c_str());
 }
 
 void loop() {

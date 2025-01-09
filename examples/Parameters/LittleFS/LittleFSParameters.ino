@@ -5,23 +5,25 @@
 #include <Arduino.h>
 #include <LittleFS.h>
 #include <FS.h>
+#include <string>
 
-String readFile(fs::FS &fs, const char * path){
+std::string readFile(fs::FS &fs, const char * path){
   Serial.printf("Reading file: %s\r\n", path);
   File file = fs.open(path, "r");
   if(!file || file.isDirectory()){
     Serial.println("- empty file or failed to open file");
-    return String();
+    return std::string();
   }
   Serial.println("- read from file:");
-  String fileContent;
+  std::string fileContent;
   while(file.available()){
-    fileContent+=String((char)file.read());
+    fileContent += static_cast<char>(file.read());
   }
   file.close();
-  Serial.println(fileContent);
+  Serial.println(fileContent.c_str());
   return fileContent;
 }
+
 void writeFile(fs::FS &fs, const char * path, const char * message){
   Serial.printf("Writing file: %s\r\n", path);
   File file = fs.open(path, "w");
@@ -48,7 +50,7 @@ if (!LittleFS.begin()) { //to start littlefs
 Serial.println("LittleFS mount failed");
 return;
 }
-data = readFile(LittleFS, "/data.txt").toInt();
+data = std::stoi(readFile(LittleFS, "/data.txt"));
 WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP  
   // put your setup code here, to run once:
   pinMode(TRIGGER_PIN, INPUT_PULLUP);
