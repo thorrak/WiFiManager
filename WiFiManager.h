@@ -21,6 +21,7 @@
 #endif
 
 #include <vector>
+#include <string>
 
 // #define WM_MDNS            // includes MDNS, also set MDNS with sethostname
 // #define WM_FIXERASECONFIG  // use erase flash fix
@@ -63,7 +64,7 @@
 
 #define WM_WEBSERVERSHIM      // use webserver shim lib
 
-#define WM_G(string_literal)  (String(FPSTR(string_literal)).c_str())
+#define WM_G(string_literal)  (std::string(FPSTR(string_literal)).c_str())
 
 #ifdef ESP8266
 
@@ -273,7 +274,7 @@ class WiFiManager
     boolean       process();
 
     // get the AP name of the config portal, so it can be used in the callback
-    String        getConfigPortalSSID();
+    std::string        getConfigPortalSSID();
     int           getRSSIasQuality(int RSSI);
 
     // erase wifi credentials
@@ -347,7 +348,7 @@ class WiFiManager
     
     // toggle debug output
     void          setDebugOutput(boolean debug);
-    void          setDebugOutput(boolean debug, String prefix); // log line prefix, default "*wm:"
+    void          setDebugOutput(boolean debug, std::string prefix); // log line prefix, default "*wm:"
     void          setDebugOutput(boolean debug, wm_debuglevel_t level ); // log line prefix, default "*wm:"
 
     //set min quality percentage to include in scan, defaults to 8% if not specified
@@ -420,7 +421,7 @@ class WiFiManager
 
     // set a custom hostname, sets sta and ap dhcp client id for esp32, and sta for esp8266
     bool          setHostname(const char * hostname);
-    bool          setHostname(String hostname);
+    bool          setHostname(std::string hostname);
 
     // show erase wifi onfig button on info page, true
     void          setShowInfoErase(boolean enabled);
@@ -443,7 +444,7 @@ class WiFiManager
     void          setMenu(const char* menu[], uint8_t size);
     
     // set the webapp title, default WiFiManager
-    void          setTitle(String title);
+    void          setTitle(std::string title);
 
     // add params to its own menu page and remove from wifi, NOT TO BE COMBINED WITH setMenu!
     void          setParamsPage(bool enable);
@@ -452,20 +453,20 @@ class WiFiManager
     uint8_t       getLastConxResult();
     
     // get a status as string
-    String        getWLStatusString(uint8_t status);    
-    String        getWLStatusString();    
+    std::string        getWLStatusString(uint8_t status);    
+    std::string        getWLStatusString();    
 
     // get wifi mode as string
-    String        getModeString(uint8_t mode);
+    std::string        getModeString(uint8_t mode);
 
     // check if the module has a saved ap to connect to
     bool          getWiFiIsSaved();
 
     // helper to get saved password, if persistent get stored, else get current if connected    
-    String        getWiFiPass(bool persistent = true);
+    std::string        getWiFiPass(bool persistent = true);
 
     // helper to get saved ssid, if persistent get stored, else get current if connected
-    String        getWiFiSSID(bool persistent = true);
+    std::string        getWiFiSSID(bool persistent = true);
 
     // debug output the softap config
     void          debugSoftAPConfig();
@@ -474,19 +475,19 @@ class WiFiManager
     void          debugPlatformInfo();
 
     // helper for html
-    String        htmlEntities(String str, bool whitespace = false);
+    std::string        htmlEntities(std::string str, bool whitespace = false);
     
     // set the country code for wifi settings, CN
-    void          setCountry(String cc);
+    void          setCountry(std::string cc);
 
     // set body class (invert), may be used for hacking in alt classes
-    void          setClass(String str);
+    void          setClass(std::string str);
 
     // set dark mode via invert class
     void          setDarkMode(bool enable);
 
     // get default ap esp uses , esp_chipid etc
-    String        getDefaultAPName();
+    std::string        getDefaultAPName();
     
     // set port of webserver, 80
     void          setHttpPort(uint16_t port);
@@ -498,10 +499,10 @@ class WiFiManager
     bool          getWebPortalActive();
 
     // to preload autoconnect for test fixtures or other uses that skip esp sta config
-    bool          preloadWiFi(String ssid, String pass);
+    bool          preloadWiFi(std::string ssid, std::string pass);
 
     // get hostname helper
-    String        getWiFiHostname();
+    std::string        getWiFiHostname();
 
 
     std::unique_ptr<DNSServer>        dnsServer;
@@ -540,12 +541,12 @@ class WiFiManager
 
     // defaults
     const uint8_t  DNS_PORT               = 53;
-    String        _apName                 = "no-net";
-    String        _apPassword             = "";
-    String        _ssid                   = ""; // var temp ssid
-    String        _pass                   = ""; // var temp psk
-    String        _defaultssid            = ""; // preload ssid
-    String        _defaultpass            = ""; // preload pass
+    std::string        _apName                 = "no-net";
+    std::string        _apPassword             = "";
+    std::string        _ssid                   = ""; // var temp ssid
+    std::string        _pass                   = ""; // var temp psk
+    std::string        _defaultssid            = ""; // preload ssid
+    std::string        _defaultpass            = ""; // preload pass
 
     // options flags
     unsigned long _configPortalTimeout    = 0; // ms close config portal loop if set (depending on  _cp/webClientCheck options)
@@ -553,7 +554,7 @@ class WiFiManager
     unsigned long _saveTimeout            = 0; // ms stop trying to connect to ap on saves, in case bugs in esp waitforconnectresult
     
     WiFiMode_t    _usermode               = WIFI_STA; // Default user mode
-    String        _wifissidprefix         = FPSTR(S_ssidpre); // auto apname prefix prefix+chipid
+    std::string        _wifissidprefix         = FPSTR(S_ssidpre); // auto apname prefix prefix+chipid
     int           _cpclosedelay           = 2000; // delay before wifisave, prevents captive portal from closing to fast.
     bool          _cleanConnect           = false; // disconnect before connect in connectwifi, increases stability on connects
     bool          _connectonsave          = true; // connect to wifi when saving creds
@@ -599,14 +600,14 @@ class WiFiManager
     boolean       _showBack               = false; // show back button
     boolean       _enableConfigPortal     = true;  // FOR autoconnect - start config portal if autoconnect failed
     boolean       _disableConfigPortal    = true;  // FOR autoconnect - stop config portal if cp wifi save
-    String        _hostname               = "";    // hostname for esp8266 for dhcp, and or MDNS
+    std::string        _hostname               = "";    // hostname for esp8266 for dhcp, and or MDNS
 
     const char*   _customHeadElement      = ""; // store custom head element html from user inside <head>
     const char*   _customBodyHeader       = ""; // store custom top body element html from user inside <body>
     const char*   _customBodyFooter       = ""; // store custom bottom body element html from user inside <body>
     const char*   _customMenuHTML         = ""; // store custom menu html from user
-    String        _bodyClass              = ""; // class to add to body
-    String        _title                  = FPSTR(S_brand); // app title -  default WiFiManager
+    std::string        _bodyClass              = ""; // class to add to body
+    std::string        _title                  = FPSTR(S_brand); // app title -  default WiFiManager
 
     // internal options
     
@@ -639,7 +640,7 @@ protected:
     
     boolean       _disableIpFields        = false; // modify function of setShow_X_Fields(false), forces ip fields off instead of default show if set, eg. _staShowStaticFields=-1
 
-    String        _wificountry            = "";  // country code, @todo define in strings lang
+    std::string        _wificountry            = "";  // country code, @todo define in strings lang
 
     // wrapper functions for handling setting and unsetting persistent for now.
     bool          esp32persistent         = false;
@@ -660,10 +661,10 @@ protected:
     void          setupDNSD();
     void          setupHTTPServer();
 
-    uint8_t       connectWifi(String ssid, String pass, bool connect = true);
+    uint8_t       connectWifi(std::string ssid, std::string pass, bool connect = true);
     bool          setSTAConfig();
     bool          wifiConnectDefault();
-    bool          wifiConnectNew(String ssid, String pass,bool connect = true);
+    bool          wifiConnectNew(std::string ssid, std::string pass,bool connect = true);
 
     uint8_t       waitForConnectResult();
     uint8_t       waitForConnectResult(uint32_t timeout);
@@ -673,7 +674,7 @@ protected:
 public:
     void          handleNotFound();
 protected:
-    void          HTTPSend(const String &content);
+    void          HTTPSend(const std::string &content);
     void          handleRoot();
     void          handleWifi(boolean scan);
     void          handleWifiSave();
@@ -710,8 +711,8 @@ protected:
     uint8_t       WiFi_softap_num_stations();
     bool          WiFi_hasAutoConnect();
     void          WiFi_autoReconnect();
-    String        WiFi_SSID(bool persistent = true) const;
-    String        WiFi_psk(bool persistent = true) const;
+    std::string        WiFi_SSID(bool persistent = true) const;
+    std::string        WiFi_psk(bool persistent = true) const;
     bool          WiFi_scanNetworks();
     bool          WiFi_scanNetworks(bool force,bool async);
     bool          WiFi_scanNetworks(unsigned int cachetime,bool async);
@@ -755,20 +756,20 @@ protected:
     #endif
 
     // output helpers
-    String        getParamOut();
-    String        getIpForm(String id, String title, String value);
-    String        getScanItemOut();
-    String        getStaticOut();
-    String        getHTTPHead(String title, String classes = "");
-    String        getHTTPEnd();
-    String        getMenuOut();
+    std::string        getParamOut();
+    std::string        getIpForm(std::string id, std::string title, std::string value);
+    std::string        getScanItemOut();
+    std::string        getStaticOut();
+    std::string        getHTTPHead(std::string title, std::string classes = "");
+    std::string        getHTTPEnd();
+    std::string        getMenuOut();
     //helpers
-    boolean       isIp(String str);
-    String        toStringIp(IPAddress ip);
+    boolean       isIp(std::string str);
+    std::string        toStringIp(IPAddress ip);
     boolean       validApPassword();
-    String        encryptionTypeStr(uint8_t authmode);
-    void          reportStatus(String &page);
-    String        getInfoData(String id);
+    std::string        encryptionTypeStr(uint8_t authmode);
+    void          reportStatus(std::string &page);
+    std::string        getInfoData(std::string id);
 
     // flags
     boolean       connect             = false;
@@ -794,7 +795,7 @@ protected:
     WiFiManagerParameter** _params    = NULL;
 
     boolean _debug  = true;
-    String _debugPrefix = FPSTR(S_debugPrefix);
+    std::string _debugPrefix = FPSTR(S_debugPrefix);
 
     wm_debuglevel_t debugLvlShow = WM_DEBUG_VERBOSE; // at which level start showing [n] level tags
 
