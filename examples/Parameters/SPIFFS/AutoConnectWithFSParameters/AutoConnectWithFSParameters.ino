@@ -7,6 +7,8 @@
 
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
 
+#include <string>
+
 //define your default values here, if there are different values in config.json, they are overwritten.
 char mqtt_server[40];
 char mqtt_port[6] = "8080";
@@ -126,9 +128,9 @@ void setup() {
   strcpy(mqtt_port, custom_mqtt_port.getValue());
   strcpy(api_token, custom_api_token.getValue());
   Serial.println("The values in the file are: ");
-  Serial.println("\tmqtt_server : " + String(mqtt_server));
-  Serial.println("\tmqtt_port : " + String(mqtt_port));
-  Serial.println("\tapi_token : " + String(api_token));
+  Serial.println("\tmqtt_server : " + std::string(mqtt_server));
+  Serial.println("\tmqtt_port : " + std::string(mqtt_port));
+  Serial.println("\tapi_token : " + std::string(api_token));
 
   //save the custom parameters to FS
   if (shouldSaveConfig) {

@@ -1,5 +1,5 @@
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
-
+#include <string>
 
 void setup() {
     // WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
@@ -23,7 +23,7 @@ void setup() {
     bool res;
     // res = wm.autoConnect(); // auto generated AP name from chipid
     // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
-    res = wm.autoConnect("AutoConnectAP","password"); // password protected ap
+    res = wm.autoConnect("AutoConnectAP", "password"); // password protected ap
 
     if(!res) {
         Serial.println("Failed to connect");
